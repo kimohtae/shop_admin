@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.person.shoppingmall_admin.mapper.CategoryMapper">
+    <select id="selectCategories" resultType="com.person.shoppingmall_admin.data.CategoryVO">
+        select cate_seq, cate_name, count, parent_name from
+        (
+        	(
+        		select * from category_info order by cate_seq desc limit 12 offset #{offset}
+        	)a
+        	left outer join 
+        	(
+        		select pi_cate_seq, count(*) from product_info group by pi_cate_seq
+        	)b on a.cate_seq = b.pi_cate_seq
+        )
+        c left outer join(
+        	select cate_seq as parent_seq, cate_name as parent_name from category_info
+        )d
+        on c.cate_parent = d.parent_seq
+    </select>
+</mapper>
