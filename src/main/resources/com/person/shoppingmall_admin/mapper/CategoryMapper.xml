@@ -17,4 +17,19 @@
         )d
         on c.cate_parent = d.parent_seq
     </select>
+    <select id="selectCategoryCnt" resultType="java.lang.Integer">
+        select count(*) from category_info
+    </select>
+    <select id="selectRootCategories" resultType="com.person.shoppingmall_admin.data.CategoryVO">
+        select * from category_info where cate_parent is null
+
+    </select>
+    <select id="selectChildCategories" resultType="com.person.shoppingmall_admin.data.CategoryVO">
+        select * from category_info where cate_parent = #{parent_seq}
+    </select>
+
+
+    <insert id="insertCategory">
+        insert into category_info(cate_name, cate_parent) values(#{cate_name}, #{cate_parent})
+    </insert>
 </mapper>

@@ -21,6 +21,7 @@ public class CategoryController {
         if(offset==null)offset=0;
         List<CategoryVO> list = mapper.selectCategories(offset);
         model.addAttribute("list", list);
+        model.addAttribute("cnt", mapper.selectCategoryCnt());
 
         return "/manage/category";
     }

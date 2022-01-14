@@ -9,4 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CategoryMapper {
     List<CategoryVO> selectCategories(Integer offset);
+    Integer selectCategoryCnt();
+    List<CategoryVO> selectRootCategories();
+    List<CategoryVO> selectChildCategories(Integer parent_seq);
+    
+    void insertCategory(CategoryVO data);
 }
