@@ -1,7 +1,16 @@
 header{
-    width: 100%; 
+    position: fixed; left: 0; top: 0; width: 100%; 
+    background-color: #fff; 
     padding: 10px 30px; box-sizing: border-box;
+    border-bottom: 1px solid #eee;
 }
+
+main {
+    padding-left: 280px; padding-top: 100px;
+    padding-right: 30px; background-color: #f4f5f9;
+    z-index: 999; min-width: 1100px;
+}
+
 #gnb{float: right;}
 #gnb > a{
     text-decoration: none; margin: 0 7px; display: inline-block; vertical-align: middle; 
@@ -14,3 +23,4 @@ header{
     background-color: orangered; width: 10px; height: 10px; border-radius: 50%; 
     display: block; position: absolute; right: -3px; top: -2px;
     }
+

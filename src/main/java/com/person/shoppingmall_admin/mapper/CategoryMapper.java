@@ -12,6 +12,11 @@ public interface CategoryMapper {
     Integer selectCategoryCnt();
     List<CategoryVO> selectRootCategories();
     List<CategoryVO> selectChildCategories(Integer parent_seq);
+    CategoryVO selectCategoryBySeq(Integer seq);
     
     void insertCategory(CategoryVO data);
+
+    void updateCategory(CategoryVO data);
+
+    void deleteCategory(Integer seq);
 }

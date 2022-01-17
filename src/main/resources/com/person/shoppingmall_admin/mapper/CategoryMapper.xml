@@ -27,9 +27,21 @@
     <select id="selectChildCategories" resultType="com.person.shoppingmall_admin.data.CategoryVO">
         select * from category_info where cate_parent = #{parent_seq}
     </select>
+    <select id="selectCategoryBySeq" resultType="com.person.shoppingmall_admin.data.CategoryVO">
+        select * from category_info where cate_seq = #{seq}
+    </select>
 
 
     <insert id="insertCategory">
         insert into category_info(cate_name, cate_parent) values(#{cate_name}, #{cate_parent})
     </insert>
+
+    <update id="updateCategory">
+        update category_info set cate_name= #{cate_name}, cate_parent=#{cate_parent}
+        where cate_seq = #{cate_seq}
+    </update>
+    <delete id="deleteCategory">
+        delete from category_info where cate_seq = #{seq}
+    </delete>
+
 </mapper>

@@ -20,8 +20,13 @@ public class CategoryController {
     public String getManageCategory(@RequestParam @Nullable Integer offset, Model model){
         if(offset==null)offset=0;
         List<CategoryVO> list = mapper.selectCategories(offset);
+        Integer cnt = mapper.selectCategoryCnt();
+        Integer page =  (cnt/12)+(cnt%12>0?1:0);
+
         model.addAttribute("list", list);
-        model.addAttribute("cnt", mapper.selectCategoryCnt());
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("page", page);
+        
 
         return "/manage/category";
     }
