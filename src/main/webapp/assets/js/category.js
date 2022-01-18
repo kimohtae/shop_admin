@@ -1,5 +1,20 @@
 // assets/js/category.js
 $(function(){
+    $("#search_keyword").val(keyword);
+    $(".category_types a").removeClass("current");
+    if(type == 'root'){
+        $(".category_types a").eq(1).addClass("current");
+    }
+    else if(type == 'child'){
+        $(".category_types a").eq(2).addClass("current");
+    }
+    else{
+        $(".category_types a").eq(0).addClass("current");
+    }
+
+    let active_index = offset/12;
+    $(".pager_area a").eq(active_index).addClass("current");
+
     resetPopup();
     $(".modify_container").css("display","none")
 
@@ -84,7 +99,8 @@ $(function(){
     })
 
     $(".category_delete").click(function(){
-        if(!confirm("삭제하시겠습니까?"))return;
+        if(!confirm("삭제하시겠습니까?\n하위 카테고리도 모두 삭제됩니다."))return;
+
 
         let seq = $(this).attr("data-seq");
         $.ajax({
@@ -187,7 +203,6 @@ $(function(){
         })
     })
 
-
     $("#add_category").click(function(){
         $(".add_category_wrap").css("display","block");
         $("#save").css("display","inline-block");
@@ -199,5 +214,23 @@ $(function(){
         if(!confirm("취소하시겠습니까?\n편집된 내용은 저장되지 않습니다."))return;
         $(".add_category_wrap").css("display","")
     })
+
+    $(".search_box a").click(function(e){
+        e.preventDefault();
+        let keyword = $("#search_keyword").val();
+        location.href="/manage/category?keyword="+keyword+"&type="+type;
+    })
+    $(".category_types a").click(function(e){
+        e.preventDefault();
+        let dataType = $(this).attr("data-type");
+        let keyword = $("#search_keyword").val();
+        location.href="/manage/category?keyword="+keyword+"&type="+dataType;
+    })
+    $("#search_keyword").keydown(function(e){
+        if(e.keyCode==13){
+            $(".search_box a").trigger("click");
+        }
+    })
+
 })
 

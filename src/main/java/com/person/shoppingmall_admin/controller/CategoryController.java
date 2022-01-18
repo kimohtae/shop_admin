@@ -17,15 +17,25 @@ public class CategoryController {
     @Autowired CategoryMapper mapper;
 
     @GetMapping("/manage/category")
-    public String getManageCategory(@RequestParam @Nullable Integer offset, Model model){
-        if(offset==null)offset=0;
-        List<CategoryVO> list = mapper.selectCategories(offset);
-        Integer cnt = mapper.selectCategoryCnt();
+    public String getManageCategory(
+        @RequestParam @Nullable String type,
+        @RequestParam @Nullable String keyword,
+        @RequestParam @Nullable Integer offset,
+        Model model
+        ){
+        model.addAttribute("keyword", keyword);
+        if(offset == null)offset=0;
+        if(keyword == null) keyword = "%%";
+        else keyword = "%"+keyword+"%";
+        List<CategoryVO> list = mapper.selectCategories(offset,keyword, type);
+        Integer cnt = mapper.selectCategoryCnt(keyword, type);
         Integer page =  (cnt/12)+(cnt%12>0?1:0);
 
         model.addAttribute("list", list);
         model.addAttribute("cnt", cnt);
+        model.addAttribute("offset", offset);
         model.addAttribute("page", page);
+        model.addAttribute("type", type);
         
 
         return "/manage/category";
