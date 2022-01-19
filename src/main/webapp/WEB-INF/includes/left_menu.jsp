@@ -30,8 +30,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/manage/category">
-                        <span>Category</span> 
+                    <a href="/manage/delivery">
+                        <span>Delivery</span> 
+                    </a>
+                </li>
+                <li>
+                    <a href="/manage/manufacturer">
+                        <span>Manufacturer</span> 
                     </a>
                 </li>
             </ul>

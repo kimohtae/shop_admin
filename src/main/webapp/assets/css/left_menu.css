@@ -7,6 +7,7 @@
     background-color: #fff;
     height: calc(100vh - 95px);
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+    z-index: 99999;
 }
 #left_menu a{
     display: block; text-decoration: none;
