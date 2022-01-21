@@ -92,6 +92,7 @@ $(function(){
     $(".modify").click(function(){
         let seq = $(this).attr("data-seq");
         $(".popup_wrap").css("display","block");
+        $(".popup h2 span").html("수정")
         $("#save").css("display","none");
         $("#update").css("display","inline-block");
         $.ajax({
@@ -158,6 +159,7 @@ $(function(){
 
     $("#add_seller").click(function(){
         $(".popup_wrap").css("display","block");
+        $(".popup h2 span").html("추가")
         $("#save").css("display","inline-block");
         $("#update").css("display","none");
     })
