@@ -31,9 +31,9 @@
     </insert>
     <update id="updateSeller">
         update seller_info set 
-            si_pwd=#{si_pwd},si_name=#{si_name},si_email=#{si_email},
+            si_name=#{si_name},si_email=#{si_email},
             si_phone=#{si_phone},si_address=#{si_address},si_img_url=#{si_img_url}, si_status=#{si_status}
-        where si_seq = #{si_seq}
+        where si_id = #{si_id}
     </update>
     <delete id="deleteSeller">
         delete from seller_info where si_seq = #{si_seq}

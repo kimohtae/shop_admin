@@ -95,6 +95,8 @@ public class FileAPIController {
 
     @DeleteMapping("/image/{type}/{uri}")
     public String deleteImage(@PathVariable String type,@PathVariable String uri)throws Exception{
+        if(uri.equals("default.jpg"))return "default.jpg는 삭제할 수 없습니다.";
+        
         String filePath = path+"/"+type+"/"+uri;
         File deleteFile = new File(filePath);
         if(deleteFile.exists()){

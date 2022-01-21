@@ -8,7 +8,9 @@ import com.person.shoppingmall_admin.mapper.SellerMapper;
 import com.person.shoppingmall_admin.util.AESAlgorithm;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,5 +42,26 @@ public class SellerAPIController {
     @GetMapping("/select_one")
     public SellerVO getSellerSelectOne(@RequestParam Integer seq){
         return mapper.selectSellerBySeq(seq);
+    }
+
+    @PatchMapping("/update")
+    public Map<String, Object> patchSellerInfo(@RequestBody SellerVO data){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        if(mapper.isExistSellerId(data.getSi_id())==1){
+            mapper.updateSeller(data);
+            resultMap.put("status", true);
+            resultMap.put("message", "판매자 정보가 수정되었습니다.");
+        }else{
+            resultMap.put("status", false);
+            resultMap.put("message", data.getSi_id()+"은/는 존재하지 않는 아이디 입니다.");
+        }
+        return resultMap;
+        
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteSeller(@RequestParam Integer seq){
+        mapper.deleteSeller(seq);
+        return "판매자가 삭제되었습니다";
     }
 }
