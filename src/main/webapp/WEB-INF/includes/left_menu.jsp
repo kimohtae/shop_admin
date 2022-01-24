@@ -48,6 +48,9 @@
             </li>
             <ul class="sub">
                 <li>
+                    <a href="/account/administer">Administer</a>
+                </li>
+                <li>
                     <a href="/account/seller">Sellers</a>
                 </li>
                 <li>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.person.shoppingmall_admin.mapper.ProductMapper">
+    <select id="selectProductList" resultType="com.person.shoppingmall_admin.data.ProductVO">
+        select 
+        	pi_seq,pi_name, pi_price, pi_info, pi_discount_rate, pi_point_rate, pi_release_date,
+	        pi_stock, pi_status, cate_name, di_price, di_name, si_name, si_email, si_phone, si_seq, 
+	        si_address, si_img_url, mfi_name, mfi_email, mfi_phone,pii_img_url,
+	        pi_price-pi_price*pi_discount_rate/100 as discounted_price,
+	        (pi_price-pi_price*pi_discount_rate/100)*pi_point_rate/100 as saving_point
+        from(        
+	        select * from        
+	        	(select * from
+	        		(select * from
+	        			(select * 
+	        			from product_info a 
+	        			left outer join category_info b 
+	        			on a.pi_cate_seq = b.cate_seq
+                        )c 
+	        		left outer join delivery_info d 
+	        		on c.pi_delivery_seq = d.di_seq
+                    )e
+	        	left outer join manufacturer_info f 
+	        	on e.pi_mfi_seq = f.mfi_seq
+                )g 
+	        left outer join product_image_info h
+	        on g.pi_seq = h.pii_pi_seq where pii_thumb = true
+            )i
+	    left outer join seller_info j
+	    on i.pi_seller_seq = j.si_seq 
+        where pi_name like #{keyword}
+        order by pi_seq desc
+        limit 10 offset #{offset}
+    </select>
+    <select id="selectProductCnt" resultType="java.lang.Integer">
+        select count(*) from product_info
+        where pi_name like #{keyword}
+    </select>
+</mapper>

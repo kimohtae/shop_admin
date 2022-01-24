@@ -1,0 +1,52 @@
+/* product.css */
+
+main > h1{font-size: 24px; margin-bottom: 30px;}
+
+.summary_area{padding: 10px 0; overflow: hidden;}
+.summary_area > p {float: left;}
+.summary_area > .search_area{float: right;}
+
+.search_area > *{display: inline-block; vertical-align: middle;}
+.search_box{
+    background-color: #fff; padding: 10px 15px;
+    border-radius: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.07);
+}
+.search_box select{
+    border: 0; outline: none; 
+    margin-right: 5px;
+}
+#keyword{
+    bottom: 0; padding: 0; border: none;
+}
+#search_btn{
+    text-decoration: none; color: #333;
+}
+#add_product{
+    margin-left: 10px; border: 0; padding: 10px 0; width: 120px;
+    background-color: #fe634d; color: #fff; border-radius: 10px;
+    cursor: pointer;
+}
+#add_product i{margin-right: 10px;}
+.product_list table{
+    width: 100%; background-color: #fff; 
+    border-radius: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+.product_list table th, .product_list table td{padding: 20px 10px; font-size: 14px;}
+.product_list table th{text-align-last: left;}
+.product_list table thead{background-color: #fafafa;}
+.product_list tbody td:first-child{border-radius: 10px 0 0 10px;}
+.product_list tbody td:last-child{border-radius: 0 10px 10px 0;}
+.product_list tbody tr{transition: box-shadow 0.3s;}
+.product_list tbody tr:hover{z-index: 9; box-shadow: 0 0 20px #fe5e4975;}
+
+.product_list td span{display: inline-block; vertical-align: middle;}
+.product_list td .product_img{
+    width: 35px; height: 35px; background-size: 100%; background-position: center;
+    margin-right: 5px; margin-top: 3px; border-radius: 50%; border: 1px solid #ccc;
+    vertical-align: middle;
+}
+
+
+
+
