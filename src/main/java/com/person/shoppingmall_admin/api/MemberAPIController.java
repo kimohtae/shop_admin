@@ -35,7 +35,7 @@ public class MemberAPIController {
 
         mapper.insertMemeber(data);
         resultMap.put("status", true);
-        resultMap.put("message", "멤버가 등록되었습니다..");
+        resultMap.put("message", "회원이 등록되었습니다.");
         
         return resultMap;
     } 

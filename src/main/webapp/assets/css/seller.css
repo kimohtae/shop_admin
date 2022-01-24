@@ -14,7 +14,7 @@ main > h1{font-size: 24px; margin-bottom: 30px;}
     border-radius: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.07);
 }
 #keyword{
-    bottom: 0; padding: 0; border: none;
+    bottom: 0; padding: 10px; border: none;
 }
 #search_btn{
     text-decoration: none; color: #333;
@@ -35,7 +35,7 @@ main > h1{font-size: 24px; margin-bottom: 30px;}
 .seller_list table thead{background-color: #fafafa;}
 .seller_list tbody td:first-child{border-radius: 10px 0 0 10px;}
 .seller_list tbody td:last-child{border-radius: 0 10px 10px 0;}
-.seller_list tbody tr{transition: box-shadow 0.5s;}
+.seller_list tbody tr{transition: box-shadow 0.3s;}
 .seller_list tbody tr:hover{z-index: 9; box-shadow: 0 0 20px #fe5e4975;}
 .seller_list td button{
     border: 1px solid #000; background-color: transparent; border-radius: 3px; padding: 0;
@@ -64,9 +64,9 @@ main > h1{font-size: 24px; margin-bottom: 30px;}
 .seller_info > div{display: inline-block; vertical-align: top; width: 250px; margin: 0 10px;}
 .seller_info input,.seller_info textarea,.seller_info select{
     width: 100%; font-size: 14px; margin-bottom: 10px; border: 0;
-    box-sizing: border-box; padding: 10xp 20px; border: 1px solid #ccc;
+    box-sizing: border-box; padding: 3px 7px; border: 1px solid #ccc;
 }
-.seller_info textarea{height: 120px; resize: none;}
+.seller_info textarea{height: 138px; resize: none;}
 
 .profile_img_area{
     width: 200px; height: 200px; position: relative; 
@@ -97,7 +97,7 @@ main > h1{font-size: 24px; margin-bottom: 30px;}
 }
 #img_delete:hover{background-color: rgb(228, 47, 47);}
 
-.seller_additional_info .btns{ margin-top: 28px;}
+.seller_additional_info .btns{ margin-top: 10px;}
 .seller_additional_info button{
     width: 100%; margin-bottom: 10px;
     background-color: transparent; color: #555;

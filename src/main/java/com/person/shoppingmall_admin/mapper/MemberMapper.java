@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberMapper {
-    List<MemberVO> selectMemberList(String keyword, Integer offset);
-    Integer selectMemberCnt(String keyword);
+    List<MemberVO> selectMemberList(String keyword, String type, Integer offset);
+    Integer selectMemberCnt(String keyword, String type);
     Integer isExistMeMberEmail(String email);
     MemberVO selectMemberBySeq(Integer seq);
 

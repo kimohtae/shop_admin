@@ -1,9 +1,13 @@
 // member.js
 $(function(){
+    $("#search_type").val($("#search_type").attr("data-type"));
+
     $("#search_btn").click(function(e){
         e.preventDefault();
         let keyword = $("#keyword").val();
-        location.href="/account/member?keyword="+keyword;
+        let type = $("#search_type").val();
+        if(type=='none')alert("검색 범위를 설정해 주세요.")
+        location.href="/account/member?keyword="+keyword+"&type="+type;
     })
     $("#keyword").keydown(function(e){
         if(e.keyCode==13){
@@ -89,12 +93,8 @@ $(function(){
 
     $(".modify").click(function(){
         let seq = $(this).attr("data-seq");
-        $("#save").attr("data-seq",seq);
 
-        $(".popup_wrap").css("display","block");
-        $(".popup h2 span").html("수정")
-        $("#save").css("display","none");
-        $("#update").css("display","inline-block");
+        
 
         $.ajax({
             url:"/member/select_one?seq="+seq,
@@ -110,6 +110,11 @@ $(function(){
                 $("#mi_gen").val(data.mi_gen);
                 $("#mi_status").val(data.mi_status);
                 $("#mi_grade").val(data.mi_grade);
+
+                $(".popup_wrap").css("display","block");
+                $(".popup h2 span").html("수정")
+                $("#save").css("display","none");
+                $("#update").css("display","inline-block");
             }
         })
     })
@@ -125,7 +130,7 @@ $(function(){
         $("#mi_phone").val("");
         $("#mi_address").val("");
         $("#mi_gen").val(0);
-        $("#mi_status").val(1);
-        $("#mi_grade").val(1);
+        $("#mi_status").val(0);
+        $("#mi_grade").val(0);
     })
 })

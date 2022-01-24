@@ -5,12 +5,41 @@
         select
             mi_seq,mi_email,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status,mi_reg_dt,mi_leave_dt
         from member_info
-        where mi_email like #{keyword}
+        <if test="type=='email'">
+            where mi_email like #{keyword}
+        </if>
+        <if test="type=='name'">
+            where mi_name like #{keyword}
+        </if>
+        <if test="type=='birth'">
+            where mi_birth like #{keyword}
+        </if>
+        <if test="type=='address'">
+            where mi_address like #{keyword}
+        </if>
+        <if test="type=='phone'">
+            where mi_phone like #{keyword}
+        </if>
         order by mi_seq
         limit 10 offset #{offset}
     </select>
     <select id="selectMemberCnt" resultType="java.lang.Integer">
-        select count(*) from member_info where mi_email like #{keyword}
+        select count(*) from member_info 
+        <if test="type=='email'">
+            where mi_email like #{keyword}
+        </if>
+        <if test="type=='name'">
+            where mi_name like #{keyword}
+        </if>
+        <if test="type=='birth'">
+            where mi_birth like #{keyword}
+        </if>
+        <if test="type=='address'">
+            where mi_address like #{keyword}
+        </if>
+        <if test="type=='phone'">
+            where mi_phone like #{keyword}
+        </if>
     </select>
     <select id="isExistMeMberEmail" resultType="java.lang.Integer">
         select count(*) from member_info where mi_email = #{email}
