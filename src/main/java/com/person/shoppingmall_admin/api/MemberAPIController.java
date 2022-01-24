@@ -8,6 +8,7 @@ import com.person.shoppingmall_admin.mapper.MemberMapper;
 import com.person.shoppingmall_admin.util.AESAlgorithm;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,5 +49,11 @@ public class MemberAPIController {
     public String patchMemberUpdate(@RequestBody MemberVO data){
         mapper.updateMemeber(data);
         return "수정되었습니다.";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteMember(@RequestParam Integer seq){
+        mapper.deleteMemeber(seq);
+        return "삭제되었습니다.";
     }
 }

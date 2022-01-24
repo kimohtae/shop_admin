@@ -67,17 +67,17 @@ $(function(){
         })
     })
     
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
+    $(".delete").click(function(){
+        let seq = $(this).attr("data-seq");
+        $.ajax({
+            url:"/member/delete?seq="+seq,
+            type:"delete",
+            success:function(){
+                alert("멤버 정보가 삭제되었습니다.")
+                location.reload();
+            }
+        })
+    })
     
     
     $("#add_member").click(function(){
