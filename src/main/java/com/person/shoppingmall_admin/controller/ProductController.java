@@ -1,6 +1,7 @@
 package com.person.shoppingmall_admin.controller;
 
 
+import com.person.shoppingmall_admin.mapper.CategoryMapper;
 import com.person.shoppingmall_admin.mapper.ProductMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ProductController {
     @Autowired ProductMapper mapper;
+    @Autowired CategoryMapper cate_mapper;
     
     @GetMapping("/product/list")
     public String getProductList(
@@ -32,6 +34,7 @@ public class ProductController {
             model.addAttribute("cnt", cnt);
             model.addAttribute("page", page);
             model.addAttribute("list", mapper.selectProductList(keyword, offset));
+            model.addAttribute("root_cate", cate_mapper.selectRootCategories());
             
             return "/product/list";
         }
