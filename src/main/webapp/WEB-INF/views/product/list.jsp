@@ -121,6 +121,37 @@
                         <option value="3">판매중지</option>
                     </select>
                 </div>
+                <div class="product_img_area">
+                    <div class="product_imgs">
+                        
+                    </div>
+                    <div class="product_img_add">
+                        <form id="prod_img_form">
+                            <input type="file" name="file" id="prod_img_input">
+                            <button id="prod_img_add" type="button">
+                                <i class ="fas fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="product_description_area">
+                    <textarea id="prod_description"></textarea>
+                </div>
+
+                <div class="product_desc_img_area">
+                    <div class="product_desc_imgs">
+                        
+                    </div>
+                    <div class="product_desc_img_add">
+                        <form id="prod_desc_img_form">
+                            <input type="file" name="file" id="prod_desc_img_input">
+                            <button id="prod_desc_img_add" type="button">
+                                <i class ="fas fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
                 <div class="btns">
                     <button id="save">등록</button>
                     <button id="update">변경</button>

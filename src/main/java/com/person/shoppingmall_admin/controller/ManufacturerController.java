@@ -27,9 +27,9 @@ public class ManufacturerController {
             model.addAttribute("offset", offset);
 
             Integer cnt =  mapper.selectManufacturerCnt(keyword);
-            Integer page = (cnt/24) + (cnt%24>0?1:0);
+            Integer page = (cnt/20) + (cnt%20>0?1:0);
 
-            model.addAttribute("list", mapper.selectManufacturerList(offset, keyword));
+            model.addAttribute("list", mapper.selectManufacturerList(offset, keyword,20));
             model.addAttribute("cnt",cnt);
             model.addAttribute("page", page);
 

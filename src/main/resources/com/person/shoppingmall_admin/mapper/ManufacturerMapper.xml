@@ -5,7 +5,7 @@
         select * from manufacturer_info 
         where mfi_name like #{keyword} 
         order by mfi_seq desc
-        limit 24 offset #{offset}
+        limit #{limit} offset #{offset}
     </select>
 
     <select id="selectManufacturerCnt" resultType="java.lang.Integer">

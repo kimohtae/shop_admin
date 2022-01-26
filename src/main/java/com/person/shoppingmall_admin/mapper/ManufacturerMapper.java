@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ManufacturerMapper {
-    List<ManufacturerVO> selectManufacturerList(Integer offset,String keyword);
+    List<ManufacturerVO> selectManufacturerList(Integer offset,String keyword, Integer limit);
     Integer selectManufacturerCnt(String keyword);
     ManufacturerVO selectManufacturerBySeq(Integer seq);
 

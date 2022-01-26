@@ -49,4 +49,21 @@ main > h1{font-size: 24px; margin-bottom: 30px;}
 
 
 
+.popup{background-color: #fff; border: 1px solid #000; margin-bottom: 10px; padding: 10px;}
+.delivery_popup{background-color: #fff; border: 1px solid #000; margin-bottom: 10px; padding: 10px;}
+.manufacturer_popup{background-color: #fff; border: 1px solid #000; margin-bottom: 10px; padding: 10px;}
+
+.product_imgs, .product_desc_imgs{display: inline-block; vertical-align: top;}
+.img_item, .img_desc_item{
+    display: inline-block; width: 150px; height: 150px;
+    border: 1px solid #000; background-size: 100%; background-repeat: no-repeat;
+    background-position: center; position: relative; vertical-align: middle;
+}
+.img_delete, .img_desc_delete{
+    position: absolute; right: 0; top: 0;
+}
+.product_img_add, .product_desc_img_add{
+    display: inline-block; width: 150px; height: 150px;
+    border: 1px solid #000; vertical-align: top;
+}
 

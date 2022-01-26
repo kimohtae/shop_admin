@@ -30,9 +30,9 @@ public class ManufacturerAPIController {
         if(offset==null) offset=0;
 
         Integer cnt = mapper.selectManufacturerCnt(keyword);
-        Integer page = (cnt/24)+(cnt%24>0 ? 1:0);
+        Integer page = (cnt/10)+(cnt%10>0 ? 1:0);
 
-        resultMap.put("list", mapper.selectManufacturerList(offset, keyword));
+        resultMap.put("list", mapper.selectManufacturerList(offset, keyword,10));
         resultMap.put("page", page);
         return resultMap;
     }

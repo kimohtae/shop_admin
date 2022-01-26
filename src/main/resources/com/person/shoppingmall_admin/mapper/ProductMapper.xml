@@ -11,4 +11,30 @@
         select count(*) from product_info
         where pi_name like #{keyword}
     </select>
+    <insert id="insertProductInfo" parameterType="com.person.shoppingmall_admin.data.ProductDataVO">
+        <selectKey keyProperty="pi_seq" resultType="int" order="AFTER">
+            select pi_seq from product_info 
+            where pi_name = #{pi_name} and pi_seller_seq = #{pi_seller_seq}
+            order by pi_seq desc limit 1
+        </selectKey>
+        INSERT INTO public.product_info
+            (
+                pi_name, pi_price, pi_sub_title, pi_discount_rate, pi_point_rate, 
+                pi_stock, pi_cate_seq, pi_seller_seq, pi_delivery_seq, pi_status, pi_mfi_seq
+            )
+        VALUES
+            (
+                #{pi_name}, #{pi_price}, #{pi_sub_title}, #{pi_discount_rate}, #{pi_point_rate}, 
+                #{pi_stock}, #{pi_cate_seq}, #{pi_seller_seq}, #{pi_delivery_seq}, #{pi_status}, #{pi_mfi_seq}
+            )
+    </insert>
+    <insert id="insertProductImage">
+        insert into product_image_info(pii_img_url, pii_pi_seq, pii_thumb)
+        values (#{pii_img_url}, #{pii_pi_seq}, #{pii_thumb})
+    </insert>
+    <insert id="insertProductDescription">
+        insert into prod_detail_desc(pdd_content,pdd_pi_seq)
+        values (#{pdd_content},#{pdd_pi_seq})
+    </insert>
+    
 </mapper>

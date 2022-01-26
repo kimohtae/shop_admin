@@ -95,17 +95,28 @@ $(function(){
     let manufacturer_keyword = "";
     let manufacturer_seq = 0;
     let manufacturer_name = "";
+    let manufacturer_offset = 0;
     $("#pi_manufacturer").click(function(){
         $.ajax({
-            url:"/manufacturer/list?keyword="+manufacturer_keyword,
+            url:"/manufacturer/list?keyword="+manufacturer_keyword+"&offset="+manufacturer_offset,
             type:"get",
             success:function(r){
                 $(".mf_pager_area").html("");
                 for(let i=0; i<r.page; i++){
-                    let tag = 
-                    '<button class="mf_pager" data-offset="'+(i*24)+'">'+(i+1)+'</button>';
+                    let page = manufacturer_offset/10;
+                    let tag ="";
+                    if(i==page){
+                        tag = '<button class="mf_pager active" data-offset="'+(i*10)+'">'+(i+1)+'</button>';
+                    }else{
+                        tag = '<button class="mf_pager" data-offset="'+(i*10)+'">'+(i+1)+'</button>';
+                    }
                     $(".mf_pager_area").append(tag);
                 }
+                $(".mf_pager").click(function(){
+                    if(manufacturer_offset == $(this).attr("data-offset"))return;
+                    manufacturer_offset = $(this).attr("data-offset");
+                    $("#pi_manufacturer").trigger("click")
+                })
                 
                 $(".manufacturer_list tbody").html("");
                 for(let i=0; i<r.list.length; i++){
@@ -130,6 +141,7 @@ $(function(){
         })
     })
     $("#manufacturer_search_btn").click(function(){
+        manufacturer_offset = 0;
         manufacturer_keyword=$("#manufacturer_keyword").val();
         $("#pi_manufacturer").trigger("click");
     })
@@ -144,8 +156,126 @@ $(function(){
         $(".manufacturer_list tr").css("background-color","");
     })
     $("#manufacturer_cancel").click(function(){
+        manufacturer_offset = 0;
         manufacturer_seq = 0;
         manufacturer_name = "";
+        manufacturer_keyword = "";
+        $("#manufacturer_keyword").val("")
         $(".manufacturer_list tr").css("background-color","");
+    })
+
+    $("#save").click(function(){
+        let cate_seq = 0;
+        if($("#small_cate").val() != 0){
+            cate_seq = $("#small_cate").val();
+        }else if($("#mid_cate").val() != 0){
+            cate_seq = $("#mid_cate").val();
+        }else if($("#root_cate").val() != 0){
+            cate_seq = $("#root_cate").val();
+        }else{
+            alert("카테고리를 선택해주세요");
+            return;
+        }
+
+        if($(".img_item").length == 0){
+            alert("제품 이미지를 추가해주세요");
+            return;
+        }
+
+        let arrImage = new Array();
+        for(let i=0; i<$(".img_item").length; i++){
+            let img_data = {
+                pii_img_url : $(".img_item").eq(i).attr("data-img"),
+                pii_thumb : $(".img_item").eq(i).hasClass("thumbnail")
+            }
+            arrImage.push(img_data)
+        }
+
+        let data = {
+            p_data:{
+                pi_name:$("#pi_name").val(),
+                pi_price:$("#pi_price").val(),
+                pi_sub_title:$("#pi_sub_title").val(),
+                pi_discount_rate:$("#pi_discount_rate").val(),
+                pi_point_rate:$("#pi_point_rate").val(),
+                pi_stock:$("#pi_stock").val(),
+                pi_cate_seq:cate_seq,
+                pi_seller_seq:3,
+                pi_delivery_seq:$("#pi_delivery").attr("di-seq"),
+                pi_mfi_seq:$("#pi_manufacturer").attr("data-seq"),
+                pi_status:$("#pi_status").val()
+            },
+            p_img_list:arrImage,
+            p_desc:{
+                pdd_content:$("#prod_description").val()
+            }
+            
+        }
+
+        $.ajax({
+            url:"/product/add",
+            type:"post",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            success:function(r){
+                alert(r.message);
+                if(r.status){
+                    alert("aaaaaaa")
+                    location.reload();
+                    alert("bbbbbb")
+                }
+            }
+        })
+    })
+    let prod_img_cnt = 0;
+    $("#prod_img_add").click(function(){
+        let form = $("#prod_img_form");
+        let formData = new FormData(form[0]);
+
+        $.ajax({
+            url:"/image/upload/product",
+            type:"post",
+            data:formData,
+            contentType:false,
+            processData:false,
+            success:function(r){
+                if(r.status){
+                    let tag=
+                        '<div class="img_item" data-img="'+r.image+'"style="background-image: url(/image/product/'+r.image+');">' +
+                            '<button class="img_delete">' +
+                                '<i class="fas fa-times"></i>' +
+                            '</button>' +
+                        '</div>'
+                    $(".product_imgs").append(tag)
+                    if(prod_img_cnt == 0){
+                        $(".img_item").addClass("thumbnail")
+                    }
+                    prod_img_cnt++;
+                }
+            }
+        })
+    })
+    $("#prod_desc_img_add").click(function(){
+        let form = $("#prod_desc_img_form");
+        let formData = new FormData(form[0]);
+
+        $.ajax({
+            url:"/image/upload/product",
+            type:"post",
+            data:formData,
+            contentType:false,
+            processData:false,
+            success:function(r){
+                if(r.status){
+                    let tag=
+                        '<div class="img_desc_item" data-img="'+r.image+'"style="background-image: url(/image/product/'+r.image+');">' +
+                            '<button class="img_desc_delete">' +
+                                '<i class="fas fa-times"></i>' +
+                            '</button>' +
+                        '</div>'
+                    $(".product_desc_imgs").append(tag)
+                }
+            }
+        })
     })
 })
