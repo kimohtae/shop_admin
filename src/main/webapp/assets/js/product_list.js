@@ -67,8 +67,9 @@ $(function(){
                     delivery_seq = $(this).attr("data-seq");
                     delivery_name = $(this).attr("data-name");
                     $(".delivery_list tr").css("background-color","")
-                    $(this).parent().parent().css("background-color","yellow")
+                    $(this).parent().parent().css("background-color","#fe634d")
                 })
+                $(".delivery_popup").css("display","block");
             }
         })
     })
@@ -85,11 +86,13 @@ $(function(){
         $("#pi_delivery").attr("di-seq",delivery_seq);
         $("#pi_delivery").val(delivery_name);
         $(".delivery_list tr").css("background-color","")
+        $(".delivery_popup").css("display","none");
     })
     $("#delivery_cancel").click(function(){
         delivery_seq = 0;
         delivery_name = "";
         $(".delivery_list tr").css("background-color","")
+        $(".delivery_popup").css("display","none");
     })
 
     let manufacturer_keyword = "";
@@ -135,8 +138,9 @@ $(function(){
                     manufacturer_seq = $(this).attr("data-seq")
                     manufacturer_name = $(this).attr("data-name")
                     $(".manufacturer_list tr").css("background-color","");
-                    $(this).parent().parent().css("background-color","yellow");
+                    $(this).parent().parent().css("background-color","#fe634d");
                 })
+                $(".manufacturer_popup").css("display","block");
             }
         })
     })
@@ -154,6 +158,7 @@ $(function(){
         $("#pi_manufacturer").val(manufacturer_name);
         $("#pi_manufacturer").attr("data-seq",manufacturer_seq);
         $(".manufacturer_list tr").css("background-color","");
+        $(".manufacturer_popup").css("display","none");
     })
     $("#manufacturer_cancel").click(function(){
         manufacturer_offset = 0;
@@ -162,6 +167,7 @@ $(function(){
         manufacturer_keyword = "";
         $("#manufacturer_keyword").val("")
         $(".manufacturer_list tr").css("background-color","");
+        $(".manufacturer_popup").css("display","none");
     })
 
     $("#save").click(function(){
@@ -190,6 +196,15 @@ $(function(){
             }
             arrImage.push(img_data)
         }
+        
+        let arrDescImage = new Array();
+        for(let i=0; i<$(".img_desc_item").length; i++){
+            let img_data = {
+                pddi_img_url : $(".img_desc_item").eq(i).attr("data-img"),
+                pddi_index : i
+            }
+            arrDescImage.push(img_data);
+        }
 
         let data = {
             p_data:{
@@ -208,8 +223,8 @@ $(function(){
             p_img_list:arrImage,
             p_desc:{
                 pdd_content:$("#prod_description").val()
-            }
-            
+            },
+            p_desc_img_list:arrDescImage
         }
 
         $.ajax({
@@ -220,14 +235,11 @@ $(function(){
             success:function(r){
                 alert(r.message);
                 if(r.status){
-                    alert("aaaaaaa")
                     location.reload();
-                    alert("bbbbbb")
                 }
             }
         })
     })
-    let prod_img_cnt = 0;
     $("#prod_img_add").click(function(){
         let form = $("#prod_img_form");
         let formData = new FormData(form[0]);
@@ -241,16 +253,16 @@ $(function(){
             success:function(r){
                 if(r.status){
                     let tag=
-                        '<div class="img_item" data-img="'+r.image+'"style="background-image: url(/image/product/'+r.image+');">' +
-                            '<button class="img_delete">' +
+                        '<div class="img_item" data-img="'+r.image+'"style="background-image: url(/image/product/'+r.image+')">' +
+                            '<button class="img_delete" onclick="onClickImageDelete('+$(".img_item").length+',\'.img_item\')">' +
                                 '<i class="fas fa-times"></i>' +
                             '</button>' +
                         '</div>'
                     $(".product_imgs").append(tag)
-                    if(prod_img_cnt == 0){
+                    if($(".img_item").length == 1){
                         $(".img_item").addClass("thumbnail")
                     }
-                    prod_img_cnt++;
+                    $("#prod_img_input").val("")
                 }
             }
         })
@@ -269,13 +281,49 @@ $(function(){
                 if(r.status){
                     let tag=
                         '<div class="img_desc_item" data-img="'+r.image+'"style="background-image: url(/image/product/'+r.image+');">' +
-                            '<button class="img_desc_delete">' +
+                            '<button class="img_desc_delete" onclick="onClickImageDelete('+$(".img_desc_item").length+',\'.img_desc_item\')">' +
                                 '<i class="fas fa-times"></i>' +
                             '</button>' +
                         '</div>'
                     $(".product_desc_imgs").append(tag)
+                    $("#prod_desc_img_input").val("")
                 }
             }
         })
     })
+
+    $(".product_img_add .icon").click(function(){
+        $("#prod_img_input").trigger("click")
+    })
+    $("#prod_img_input").change(function(){
+        if($(this).val()=="" || $(this).val()==null || $(this).val()==undefined) return;
+        $("#prod_img_add").trigger("click")
+    })
+    $(".product_desc_img_add .icon").click(function(){
+        $("#prod_desc_img_input").trigger("click")
+    })
+    $("#prod_desc_img_input").change(function(){
+        if($(this).val()=="" || $(this).val()==null || $(this).val()==undefined) return;
+        $("#prod_desc_img_add").trigger("click")
+    })
+
 })
+function onClickImageDelete(index, target){
+    $.ajax({
+        url:"/image/product/"+$(target).eq(index).attr("data-img"),
+        type:"delete",
+        success:function(msg){
+            console.log(msg);
+            $(target).eq(index).remove();
+            $(target).removeClass("thumbnail");
+            for(let i=0; i<$(target).length; i++){
+                $(target).eq(i).find("button").attr("onclick",'onClickImageDelete('+i+', \''+target+'\')')
+            }
+            if(target==".img_item"){
+                $(target).eq(0).addClass("thumbnail");
+            }
+        }
+    })
+    
+    
+}

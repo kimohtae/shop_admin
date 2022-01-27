@@ -4,6 +4,7 @@ package com.person.shoppingmall_admin.api;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.person.shoppingmall_admin.data.ProductDescImageVO;
 import com.person.shoppingmall_admin.data.ProductImageVO;
 import com.person.shoppingmall_admin.data.ProductRequest;
 import com.person.shoppingmall_admin.mapper.ProductMapper;
@@ -30,6 +31,10 @@ public class ProductAPIController {
         }
         data.getP_desc().setPdd_pi_seq(seq);
         mapper.insertProductDescription(data.getP_desc());
+        for(ProductDescImageVO descImgVo:data.getP_desc_img_list()){
+            descImgVo.setPddi_pi_seq(seq);
+            mapper.insertProductDescImage(descImgVo);
+        }
  
         resultMap.put("status", true);
         resultMap.put("message", "제품이 추가되었습니다.");

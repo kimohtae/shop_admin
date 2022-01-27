@@ -21,14 +21,14 @@ public class ProductController {
         @RequestParam @Nullable String keyword, 
         @RequestParam @Nullable Integer offset,
         Model model 
-        ){
+    ){
             model.addAttribute("keyword", keyword);
             if(keyword == null) keyword = "%%";
                 else keyword = "%"+ keyword +"%";
             if(offset == null) offset=0;
 
             int cnt = mapper.selectProductCnt(keyword);
-            int page = (cnt/10)+(cnt%10)>0?1:0;
+            int page = (cnt/10)+(cnt%10>0?1:0);
 
             model.addAttribute("offset", offset);
             model.addAttribute("cnt", cnt);

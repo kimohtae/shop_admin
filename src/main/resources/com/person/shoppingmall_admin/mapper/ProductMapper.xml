@@ -8,9 +8,14 @@
         limit 10 offset #{offset}
     </select>
     <select id="selectProductCnt" resultType="java.lang.Integer">
-        select count(*) from product_info
+        select count(*) from product_detail_info
         where pi_name like #{keyword}
     </select>
+
+
+
+
+
     <insert id="insertProductInfo" parameterType="com.person.shoppingmall_admin.data.ProductDataVO">
         <selectKey keyProperty="pi_seq" resultType="int" order="AFTER">
             select pi_seq from product_info 
@@ -36,5 +41,8 @@
         insert into prod_detail_desc(pdd_content,pdd_pi_seq)
         values (#{pdd_content},#{pdd_pi_seq})
     </insert>
-    
+    <insert id="insertProductDescImage">
+        insert into prod_detail_desc_img(pddi_img_url,pddi_index,pddi_pi_seq)
+        values(#{pddi_img_url},#{pddi_index},#{pddi_pi_seq})
+    </insert>
 </mapper>
