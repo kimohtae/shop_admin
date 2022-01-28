@@ -11,7 +11,18 @@
         select count(*) from product_detail_info
         where pi_name like #{keyword}
     </select>
-
+    <select id="selectProductImageNames" resultType="java.lang.String">
+        select pii_img_url from product_image_info where pii_pi_seq = #{seq}
+    </select>
+    <select id="selectProductDescImageNames" resultType="java.lang.String">
+        select pddi_img_url from prod_detail_desc_img where pddi_pi_seq = #{seq}
+    </select>
+    <select id="selectProductBySeq" resultType="com.person.shoppingmall_admin.data.ProductVO">
+        select * from product_detail_info where pi_seq = #{seq}
+    </select>
+    <select id="selectProductDescription" resultType="java.lang.String">
+        select pdd_content from prod_detail_desc where pdd_pi_seq = #{seq}
+    </select>
 
 
 
@@ -45,4 +56,43 @@
         insert into prod_detail_desc_img(pddi_img_url,pddi_index,pddi_pi_seq)
         values(#{pddi_img_url},#{pddi_index},#{pddi_pi_seq})
     </insert>
+
+
+
+    <delete id="deleteProduct">
+        delete from product_info where pi_seq = #{seq}
+    </delete>
+    <delete id="deleteProductImage">
+        delete from product_image_info where pii_img_url = #{fileName}
+    </delete>
+    <delete id="deleteDetailProductImage">
+        delete from prod_detail_desc_img where pddi_img_url = #{fileName}
+    </delete>
+    <delete id="deleteProductImageBySeq">
+        delete from product_image_info where pii_pi_seq = #{seq}
+    </delete>
+    <delete id="deleteProductDetailImageBySeq">
+        delete from prod_detail_desc_img where pddi_pi_seq = #{seq}
+    </delete>
+
+
+    <update id="updateProductInfo">
+        update product_info 
+        set 
+            pi_name=#{pi_name}, pi_price=#{pi_price}, pi_sub_title=#{pi_sub_title},
+            pi_discount_rate=#{pi_discount_rate}, pi_point_rate=#{pi_point_rate}, 
+            pi_stock=#{pi_stock}, pi_cate_seq=#{pi_cate_seq}, 
+            pi_seller_seq=#{pi_seller_seq}, pi_delivery_seq=#{pi_delivery_seq}, 
+            pi_status=#{pi_status}, pi_mfi_seq=#{pi_mfi_seq}
+        where
+            pi_seq = #{pi_seq}
+    </update>
+    <update id="updateProdDetailDesc">
+        update prod_detail_desc 
+        set 
+            pdd_content=#{desc}
+        where
+            pdd_pi_seq=#{seq}
+    </update>
+
 </mapper>

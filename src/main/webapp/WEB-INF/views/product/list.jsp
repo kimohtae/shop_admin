@@ -68,9 +68,7 @@
                             </td>
                             <td>${item.pi_stock}</td>
                             <td>${item.di_name}</td>
-                            <td>
-                                <span class="product_img" style="background-image: url('/image/seller/${item.si_img_url}')"></span>
-                            </td>
+                            <td>${item.si_name}</td>
                             <td>${item.mfi_name}</td>
                             <td>
                                 <button class="detail" data-seq="${item.pi_seq}" title="상세정보"><i class="fas fa-info-circle"></i></button>

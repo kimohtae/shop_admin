@@ -306,6 +306,270 @@ $(function(){
         if($(this).val()=="" || $(this).val()==null || $(this).val()==undefined) return;
         $("#prod_desc_img_add").trigger("click")
     })
+    $("#add_product").click(function(){
+        $(".popup_wrap").css("display","block");
+        $(".popup_wrap").attr("mode","add")
+        $(".popup h1 span").html("등록");
+        $(".popup .btns #save").css("display","inline-block");
+        $(".popup .btns #update").css("display","none");
+    })
+
+    $(".detail").click(function(){
+        let seq = $(this).attr("data-seq");
+        $(".popup_wrap").attr("mode", "modify");
+        $(".popup_wrap").css("display", "block");
+        $(".popup h1 span").html("상세 정보");
+        $(".popup .btns #save").css("display", "none");
+        $(".popup .btns #update").css("display", "inline-block");
+        $("#update").attr("seq", seq);
+
+        $.ajax({
+            url:"/product/select_one?seq="+seq,
+            type:"get",
+            success:function(data) {
+                $.ajax({
+                    url:"/category/select_one?seq="+data.p_data.cate_seq,
+                    type:"get",
+                    success:function(cate) {
+                        // Data setting
+                        // 대, 중, 소
+                        if(cate.parents.length == 2) {
+                            $("#root_cate").val(cate.parents[1]).prop("selected", true);
+                            $.ajax({
+                                url:"/category/get/child?parent_seq="+cate.parents[1],
+                                type:"get",
+                                success:function(r) {
+                                    $("#mid_cate").html('<option value="0">중분류 선택</option>')
+                                    if(r.length > 0) {
+                                        $("#mid_cate").prop("disabled", false);
+                                        for(let i=0; i<r.length; i++) {
+                                            let tag = '<option value="'+r[i].cate_seq+'">'+r[i].cate_name+'</option>';
+                                            $("#mid_cate").append(tag);
+                                        }
+                                    }
+                                    else {
+                                        $("#mid_cate").prop("disabled", true);
+                                    }
+                                    $("#mid_cate").val(cate.parents[0])
+
+                                    $.ajax({
+                                        url:"/category/get/child?parent_seq="+cate.parents[0],
+                                        type:"get",
+                                        success:function(r) {
+                                            $("#small_cate").html('<option value="0">소분류 선택</option>')
+                                            if(r.length > 0) {
+                                                $("#small_cate").prop("disabled", false);
+                                                for(let i=0; i<r.length; i++) {
+                                                    let tag = '<option value="'+r[i].cate_seq+'">'+r[i].cate_name+'</option>';
+                                                    $("#small_cate").append(tag);
+                                                }
+                                            }
+                                            else {
+                                                $("#small_cate").prop("disabled", true);
+                                            }
+                                            $("#small_cate").val(cate.data.cate_seq).prop("selected", true);
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                        // 대, 중
+                        if(cate.parents.length == 1) {
+                            $("#root_cate").val(cate.parents[0]).prop("selected", true);
+                            $.ajax({
+                                url:"/category/get/child?parent_seq="+cate.parents[0],
+                                type:"get",
+                                success:function(r) {
+                                    $("#mid_cate").html('<option value="0">중분류 선택</option>')
+                                    if(r.length > 0) {
+                                        $("#mid_cate").prop("disabled", false);
+                                        for(let i=0; i<r.length; i++) {
+                                            let tag = '<option value="'+r[i].cate_seq+'">'+r[i].cate_name+'</option>';
+                                            $("#mid_cate").append(tag);
+                                        }
+                                    }
+                                    else {
+                                        $("#mid_cate").prop("disabled", true);
+                                    }
+                                    $("#mid_cate").val(cate.data.cate_seq)
+                                }
+                            })
+                        }
+                        // 대
+                        if(cate.parents.length == 0) {
+                            $("#root_cate").val(data.p_data.cate_seq).prop("selected", true);
+                        }
+                    }
+                })
+                // 여기부터 다른 입력 값 설정
+
+                for(let i=0; i<data.p_img_list.length; i++){
+                    let tag=
+                            '<div class="img_item" data-img="'+data.p_img_list[i]+'"style="background-image: url(/image/product/'+data.p_img_list[i]+')">' +
+                                '<button class="img_delete" onclick="onClickImageDelete('+$(".img_item").length+',\'.img_item\')">' +
+                                    '<i class="fas fa-times"></i>' +
+                                '</button>' +
+                            '</div>'
+                    $(".product_imgs").append(tag)
+                    if($(".img_item").length == 1){$(".img_item").addClass("thumbnail")}
+                    }
+
+                for(let i=0; i<data.p_desc_img_list.length; i++){
+                    let tag=
+                            '<div class="img_desc_item" data-img="'+data.p_desc_img_list[i]+'"style="background-image: url(/image/product/'+data.p_desc_img_list[i]+');">' +
+                                '<button class="img_desc_delete" onclick="onClickImageDelete('+$(".img_desc_item").length+',\'.img_desc_item\')">' +
+                                    '<i class="fas fa-times"></i>' +
+                                '</button>' +
+                            '</div>'
+                    $(".product_desc_imgs").append(tag)
+                }
+
+                $("#pi_name").val(data.p_data.pi_name);
+                $("#pi_price").val(data.p_data.pi_price);
+                $("#pi_sub_title").val(data.p_data.pi_sub_title);
+                $("#pi_discount_rate").val(data.p_data.pi_discount_rate);
+                $("#pi_point_rate").val(data.p_data.pi_point_rate);
+                $("#pi_stock").val(data.p_data.pi_stock);
+                $("#pi_seller").val(data.p_data.pi_seller);
+        
+                $("#pi_delivery").attr("di-seq",data.p_data.di_seq);
+                $("#pi_delivery").val(data.p_data.di_name);
+                $("#pi_manufacturer").attr("data-seq",data.p_data.mfi_seq);
+                $("#pi_manufacturer").val(data.p_data.mfi_name);
+                $("#pi_status").val(data.p_data.pi_status);
+                $("#prod_description").val(data.p_desc);
+            }
+        })
+    })
+
+    $(".popup .btns #cancel").click(function(){
+        $(".popup_wrap").css("display","none");
+        $("#pi_name").val("");
+        $("#pi_price").val("");
+        $("#pi_sub_title").val("");
+        $("#pi_discount_rate").val("");
+        $("#pi_point_rate").val("");
+        $("#pi_stock").val("");
+        $("#pi_seller").val("");
+
+        $("#pi_delivery").removeAttr("di-seq");
+        $("#pi_delivery").val("");
+        $("#pi_manufacturer").removeAttr("data-seq");
+        $("#pi_manufacturer").val("");
+        $("#pi_status").val(0);
+        $("#prod_description").val("");
+        $("#root_cate").val(0).prop("selecte",true);
+        $("#root_cate").trigger("change");
+
+        if($(".popup_wrap").attr("mode")=="add"){
+            let file_list = new Array();
+            for(let i=0; i<$(".img_item, .img_desc_item").length; i++){
+                let img = $(".img_item, .img_desc_item").eq(i).attr("data-img");
+                file_list.push(img);
+            }
+            $.ajax({
+                url:"/images/product",
+                type:"delete",
+                data:JSON.stringify(file_list),
+                contentType:"application/json",
+                success:function(msg){
+                    // alert(msg);
+                }
+            })
+        }
+        $(".img_item, .img_desc_item").remove();
+    })
+
+    $(".delete").click(function(){
+        if(!confirm("제품을 삭제하시겠습니까?"))return;
+        let seq = $(this).attr("data-seq");
+        $.ajax({
+            url:"/product/delete?seq="+seq,
+            type:"delete",
+            success:function(msg){
+                alert(msg);
+                location.reload();
+            }
+        })
+    })
+    $("#update").click(function(){
+        if(!confirm("제품을 수정하시겠습니까?"))return;
+        let cate_seq = 0;
+        if($("#small_cate").val() != 0){
+            cate_seq = $("#small_cate").val();
+        }else if($("#mid_cate").val() != 0){
+            cate_seq = $("#mid_cate").val();
+        }else if($("#root_cate").val() != 0){
+            cate_seq = $("#root_cate").val();
+        }else{
+            alert("카테고리를 선택해주세요");
+            return;
+        }
+
+        if($(".img_item").length == 0){
+            alert("제품 이미지를 추가해주세요");
+            return;
+        }
+
+        let arrImage = new Array();
+        for(let i=0; i<$(".img_item").length; i++){
+            let img_data = {
+                pii_pi_seq : $(this).attr("seq"),
+                pii_img_url : $(".img_item").eq(i).attr("data-img"),
+                pii_thumb : $(".img_item").eq(i).hasClass("thumbnail")
+            }
+            arrImage.push(img_data)
+        }
+        
+        let arrDescImage = new Array();
+        for(let i=0; i<$(".img_desc_item").length; i++){
+            let img_data = {
+                pddi_pi_seq : $(this).attr("seq"),
+                pddi_img_url : $(".img_desc_item").eq(i).attr("data-img"),
+                pddi_index : i
+            }
+            arrDescImage.push(img_data);
+        }
+
+        let data = {
+            p_data:{
+                pi_seq:$(this).attr("seq"),
+                pi_name:$("#pi_name").val(),
+                pi_price:$("#pi_price").val(),
+                pi_sub_title:$("#pi_sub_title").val(),
+                pi_discount_rate:$("#pi_discount_rate").val(),
+                pi_point_rate:$("#pi_point_rate").val(),
+                pi_stock:$("#pi_stock").val(),
+                pi_cate_seq:cate_seq,
+                pi_seller_seq:3,
+                pi_delivery_seq:$("#pi_delivery").attr("di-seq"),
+                pi_mfi_seq:$("#pi_manufacturer").attr("data-seq"),
+                pi_status:$("#pi_status").val()
+            },
+            p_img_list:arrImage,
+            p_desc:{
+                pdd_content:$("#prod_description").val()
+            },
+            p_desc_img_list:arrDescImage
+        }
+        $.ajax({
+            url:"/product/update",
+            type:"patch",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            success:function(r){
+                alert(r);
+                location.reload();
+                
+            }
+        })
+    })
+
+
+
+
+
+
 
 })
 function onClickImageDelete(index, target){
@@ -313,17 +577,24 @@ function onClickImageDelete(index, target){
         url:"/image/product/"+$(target).eq(index).attr("data-img"),
         type:"delete",
         success:function(msg){
-            console.log(msg);
             $(target).eq(index).remove();
             $(target).removeClass("thumbnail");
             for(let i=0; i<$(target).length; i++){
                 $(target).eq(i).find("button").attr("onclick",'onClickImageDelete('+i+', \''+target+'\')')
             }
-            if(target==".img_item"){
-                $(target).eq(0).addClass("thumbnail");
-            }
+            $(target).eq(0).addClass("thumbnail");
         }
     })
-    
+    if( $(".popup_wrap").attr("mode") == "modify"){
+        $("#cancel").prop("disabled",true);
+        let type = target == ".img_item" ? "basic" : "detail";
+        $.ajax({
+            url:"/product/delete_img/"+type+"?fileName="+$(target).eq(index).attr("data-img"),
+            type:"delete",
+            success:function(msg){
+                console.log(msg);
+            }
+        })
+    }
     
 }
