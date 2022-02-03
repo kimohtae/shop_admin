@@ -1,6 +1,9 @@
 package com.person.shoppingmall_admin.controller;
 
 
+import javax.servlet.http.HttpSession;
+
+import com.person.shoppingmall_admin.data.SellerVO;
 import com.person.shoppingmall_admin.mapper.CategoryMapper;
 import com.person.shoppingmall_admin.mapper.ProductMapper;
 
@@ -20,22 +23,27 @@ public class ProductController {
     public String getProductList(
         @RequestParam @Nullable String keyword, 
         @RequestParam @Nullable Integer offset,
-        Model model 
+        Model model, HttpSession session
     ){
-            model.addAttribute("keyword", keyword);
-            if(keyword == null) keyword = "%%";
-                else keyword = "%"+ keyword +"%";
-            if(offset == null) offset=0;
+        SellerVO seller = (SellerVO)session.getAttribute("login_seller");
+        Integer seller_seq = 0;
+        if(seller != null) seller_seq = seller.getSi_seq();
+        
 
-            int cnt = mapper.selectProductCnt(keyword);
-            int page = (cnt/10)+(cnt%10>0?1:0);
+        model.addAttribute("keyword", keyword);
+        if(keyword == null) keyword = "%%";
+            else keyword = "%"+ keyword +"%";
+        if(offset == null) offset=0;
 
-            model.addAttribute("offset", offset);
-            model.addAttribute("cnt", cnt);
-            model.addAttribute("page", page);
-            model.addAttribute("list", mapper.selectProductList(keyword, offset));
-            model.addAttribute("root_cate", cate_mapper.selectRootCategories());
-            
-            return "/product/list";
+        int cnt = mapper.selectProductCnt(keyword, seller_seq);
+        int page = (cnt/10)+(cnt%10>0?1:0);
+
+        model.addAttribute("offset", offset);
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("page", page);
+        model.addAttribute("list", mapper.selectProductList(keyword, offset, seller_seq));
+        model.addAttribute("root_cate", cate_mapper.selectRootCategories());
+        
+        return "/product/list";
         }
 }

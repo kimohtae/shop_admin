@@ -30,6 +30,7 @@ $(function(){
             mi_address:$("#mi_address").val(),
             mi_gen:$("#mi_gen").val(),
             mi_status:$("#mi_status").val(),
+            mi_role:$("#mi_role").val(),
             mi_grade:$("#mi_grade").val()
         }
         $.ajax({
@@ -57,6 +58,7 @@ $(function(){
             mi_address:$("#mi_address").val(),
             mi_gen:$("#mi_gen").val(),
             mi_status:$("#mi_status").val(),
+            mi_role:$("#mi_role").val(),
             mi_grade:$("#mi_grade").val()
         }
         $.ajax({
@@ -94,8 +96,6 @@ $(function(){
     $(".modify").click(function(){
         let seq = $(this).attr("data-seq");
 
-        
-
         $.ajax({
             url:"/member/select_one?seq="+seq,
             type:"get",
@@ -109,6 +109,7 @@ $(function(){
                 $("#mi_address").val(data.mi_address);
                 $("#mi_gen").val(data.mi_gen);
                 $("#mi_status").val(data.mi_status);
+                $("#mi_role").val(data.mi_role);
                 $("#mi_grade").val(data.mi_grade);
 
                 $(".popup_wrap").css("display","block");

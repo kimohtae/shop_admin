@@ -4,12 +4,18 @@
     <select id="selectProductList" resultType="com.person.shoppingmall_admin.data.ProductVO">
         select * from product_detail_info
         where pi_name like #{keyword}
+        <if test="seller_seq != 0">
+            and si_seq = #{seller_seq}
+        </if>
         order by pi_seq desc
         limit 10 offset #{offset}
     </select>
     <select id="selectProductCnt" resultType="java.lang.Integer">
         select count(*) from product_detail_info
         where pi_name like #{keyword}
+        <if test="seller_seq != 0">
+            and si_seq = #{seller_seq}
+        </if>
     </select>
     <select id="selectProductImageNames" resultType="java.lang.String">
         select pii_img_url from product_image_info where pii_pi_seq = #{seq}

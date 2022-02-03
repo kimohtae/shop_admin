@@ -44,6 +44,7 @@
                         <th>주소</th>
                         <th>등급</th>
                         <th>상태</th>
+                        <th>계정유형</th>
                         <th>등록일</th>
                         <th>탈퇴일</th>
                         <th></th>
@@ -75,6 +76,11 @@
                                 <c:if test="${item.mi_status==2}"><span class="status st3">가입대기</span></c:if>
                                 <c:if test="${item.mi_status==3}"><span class="status st4">탈퇴대기</span></c:if>
                                 <c:if test="${item.mi_status==4}"><span class="status st5">영구정지</span></c:if>
+                            </td>
+                            <td>
+                                <c:if test="${item.mi_role==1}"><span class="role r1">일반사용자</span></c:if>
+                                <c:if test="${item.mi_role==2}"><span class="role r2">관리자</span></c:if>
+                                <c:if test="${item.mi_role==99}"><span class="role r99">슈퍼유저</span></c:if>
                             </td>
                             <td>
                                 <fmt:formatDate value="${item.mi_reg_dt}" pattern="yyyy-MM-dd"/>
@@ -127,6 +133,11 @@
                             <option value="2">가입대기</option>
                             <option value="3">탈퇴대기</option>
                             <option value="4">영구정지</option>
+                        </select>
+                        <select id="mi_role">
+                            <option value="1">일반사용자</option>
+                            <option value="2">관리자</option>
+                            <option value="99">슈퍼유저</option>
                         </select>
                     </div>
                 </div>

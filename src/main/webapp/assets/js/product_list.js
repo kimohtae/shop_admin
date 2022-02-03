@@ -215,7 +215,7 @@ $(function(){
                 pi_point_rate:$("#pi_point_rate").val(),
                 pi_stock:$("#pi_stock").val(),
                 pi_cate_seq:cate_seq,
-                pi_seller_seq:3,
+                pi_seller_seq:$("#pi_seller").attr("data-seq"),
                 pi_delivery_seq:$("#pi_delivery").attr("di-seq"),
                 pi_mfi_seq:$("#pi_manufacturer").attr("data-seq"),
                 pi_status:$("#pi_status").val()
@@ -430,7 +430,8 @@ $(function(){
                 $("#pi_discount_rate").val(data.p_data.pi_discount_rate);
                 $("#pi_point_rate").val(data.p_data.pi_point_rate);
                 $("#pi_stock").val(data.p_data.pi_stock);
-                $("#pi_seller").val(data.p_data.pi_seller);
+                $("#pi_seller").val(data.p_data.si_name);
+                $("#pi_seller").attr("data-seq",data.p_data.si_seq)
         
                 $("#pi_delivery").attr("di-seq",data.p_data.di_seq);
                 $("#pi_delivery").val(data.p_data.di_name);
@@ -443,6 +444,7 @@ $(function(){
     })
 
     $(".popup .btns #cancel").click(function(){
+        if(!confirm("취소하시겠습니까?\n입력된 내용은 저장되지 않습니다."))return;
         $(".popup_wrap").css("display","none");
         $("#pi_name").val("");
         $("#pi_price").val("");
@@ -541,7 +543,7 @@ $(function(){
                 pi_point_rate:$("#pi_point_rate").val(),
                 pi_stock:$("#pi_stock").val(),
                 pi_cate_seq:cate_seq,
-                pi_seller_seq:3,
+                pi_seller_seq:$("#pi_seller").attr("data-seq"),
                 pi_delivery_seq:$("#pi_delivery").attr("di-seq"),
                 pi_mfi_seq:$("#pi_manufacturer").attr("data-seq"),
                 pi_status:$("#pi_status").val()

@@ -3,7 +3,7 @@
 <mapper namespace="com.person.shoppingmall_admin.mapper.MemberMapper">
     <select id="selectMemberList" resultType="com.person.shoppingmall_admin.data.MemberVO">
         select
-            mi_seq,mi_email,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status,mi_reg_dt,mi_leave_dt
+            mi_seq,mi_email,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status,mi_reg_dt,mi_leave_dt,mi_role
         from member_info
         <if test="type=='email'">
             where mi_email like #{keyword}
@@ -46,20 +46,27 @@
     </select>
     <select id="selectMemberBySeq" resultType="com.person.shoppingmall_admin.data.MemberVO">
         select 
-            mi_seq,mi_email,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status,mi_reg_dt,mi_leave_dt
+            mi_seq,mi_email,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status,mi_reg_dt,mi_leave_dt,mi_role
         from member_info 
         where mi_seq = #{seq}
+    </select>
+    <select id="memberLogin" resultType="com.person.shoppingmall_admin.data.MemberVO">
+        select 
+            mi_seq,mi_email,mi_name,mi_birth,mi_gen,mi_address,mi_phone,
+            mi_grade,mi_status,mi_reg_dt,mi_leave_dt,mi_role
+        from member_info where mi_email = #{user_id} and mi_pwd=#{user_pwd}
     </select>
 
 
 
     <insert id="insertMemeber">
-        insert into member_info(mi_email,mi_pwd,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status)
-        values(#{mi_email},#{mi_pwd},#{mi_name},#{mi_birth},#{mi_gen},#{mi_address},#{mi_phone},#{mi_grade},#{mi_status})
+        insert into member_info(mi_email,mi_pwd,mi_name,mi_birth,mi_gen,mi_address,mi_phone,mi_grade,mi_status,mi_role)
+        values(#{mi_email},#{mi_pwd},#{mi_name},#{mi_birth},#{mi_gen},#{mi_address},#{mi_phone},#{mi_grade},#{mi_status},#{mi_role})
     </insert>
     <update id="updateMemeber">
         update member_info set 
-        mi_name=#{mi_name},mi_birth=#{mi_birth},mi_gen=#{mi_gen},mi_address=#{mi_address},mi_phone=#{mi_phone},mi_grade=#{mi_grade},mi_status=#{mi_status}    
+            mi_name=#{mi_name},mi_birth=#{mi_birth},mi_gen=#{mi_gen},mi_address=#{mi_address},
+            mi_phone=#{mi_phone},mi_grade=#{mi_grade},mi_status=#{mi_status},mi_role=#{mi_role}   
         where mi_email = #{mi_email}
         </update>
     <delete id="deleteMemeber">

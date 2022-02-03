@@ -132,7 +132,7 @@
                             </tr>
                             <tr>
                                 <td>판매자</td>
-                                <td><input type="text" id="pi_seller"></td>
+                                <td><input type="text" id="pi_seller" value="${login_seller.si_name}" data-seq="${login_seller.si_seq}" disabled></td>
                                 <td>배송사</td>
                                 <td><input type="text" id="pi_delivery"></td>
                                 <td>제조사</td>

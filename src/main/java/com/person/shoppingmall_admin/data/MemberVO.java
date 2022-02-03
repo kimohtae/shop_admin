@@ -18,4 +18,5 @@ public class MemberVO {
     private Integer mi_grade;
     private Date mi_reg_dt;
     private Date mi_leave_dt;
+    private Integer mi_role; //1:일반. 2:관리자, 99:최상위관리자
 }
