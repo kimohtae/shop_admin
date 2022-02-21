@@ -2,14 +2,14 @@ package com.person.shoppingmall_admin.mapper;
 
 import java.util.List;
 
-import com.person.shoppingmall_admin.data.OrderInfoVO;
+import com.person.shoppingmall_admin.data.OrderManageInfoVO;
 
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface OrderMapper {
-    List<OrderInfoVO> selectOrderList(Integer seq, Integer offset, String keyword);
-    Integer selectOrderCnt(Integer seq, String keyword);
-    
-    void updateOrderDeliveryStatusNumber(String del_num, Integer seq);
+    List<OrderManageInfoVO> selectOrderManageInfo(Integer seq, Integer offset); 
+    Integer selectOrderManageInfoCount(Integer seq);
+    void updateOrderStatus(Integer seq, String delivery_no);
+
 }
