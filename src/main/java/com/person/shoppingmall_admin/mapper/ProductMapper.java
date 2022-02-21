@@ -13,6 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ProductMapper {
     List<ProductVO> selectProductList(String keyword, Integer offset, Integer seller_seq);
+    List<ProductVO> selectRecommendProductList(String keyword, Integer offset);
+
     Integer selectProductCnt(String keyword, Integer seller_seq);
     List<String> selectProductImageNames(Integer seq);
     List<String> selectProductDescImageNames(Integer seq);
@@ -32,4 +34,8 @@ public interface ProductMapper {
 
     void updateProductInfo(ProductDataVO data);
     void updateProdDetailDesc(String desc, Integer seq);
+    void updateProductCnt(Integer seq, Integer cnt);
+
+    void insertProductRecommend(Integer seq);
+    void deleteProductRecommend(Integer seq);
 }

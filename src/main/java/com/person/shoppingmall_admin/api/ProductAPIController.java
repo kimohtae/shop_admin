@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -118,5 +119,17 @@ public class ProductAPIController {
 
 
         return "제품이 수정되었습니다.";
+    }
+
+    @PutMapping("/recommend")
+    public String putProductRecommend(@RequestParam Integer seq){
+        mapper.insertProductRecommend(seq);
+        return "추천상품에 등록되었습니다.";
+    }
+
+    @DeleteMapping("/recommend")
+    public String deleteProductRecommend(@RequestParam Integer seq ){
+        mapper.deleteProductRecommend(seq);
+        return "추천상품에서 삭제되었습니다.";
     }
 }

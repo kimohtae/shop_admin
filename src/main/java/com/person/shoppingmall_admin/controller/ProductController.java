@@ -45,5 +45,27 @@ public class ProductController {
         model.addAttribute("root_cate", cate_mapper.selectRootCategories());
         
         return "/product/list";
-        }
+    }
+
+    @GetMapping("/product/recommend")
+    public String getProductRecommend(
+        @RequestParam @Nullable String keyword, 
+        @RequestParam @Nullable Integer offset,
+        Model model
+        ){
+        model.addAttribute("keyword", keyword);
+        if(keyword == null) keyword = "%%";
+        else keyword = "%"+ keyword +"%";
+
+        if(offset == null) offset=0;
+
+        int cnt = mapper.selectProductCnt(keyword, 0);
+        int page = (cnt/10)+(cnt%10>0?1:0);
+
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("page", page);
+        
+        model.addAttribute("list", mapper.selectRecommendProductList(keyword, offset));
+        return "/product/recommend";
+    }
 }

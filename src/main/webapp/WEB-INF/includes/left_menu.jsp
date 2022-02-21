@@ -74,6 +74,18 @@
                     <a href="/product/qna">Product QNA</a>
                 </li>
             </ul>
+            <li>
+                <a href="/order">
+                    <img src="http://placehold.it/25x25">
+                    <span>Order</span>
+                </a>
+            </li>
+            <ul class="sub">
+                <li>
+                    <a href="/order/list">Order List</a>
+                </li>
+
+            </ul>
         </ul>
     </nav>
 

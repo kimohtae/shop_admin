@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.person.shoppingmall_admin.mapper.OrderMapper">
+    <select id="selectOrderList" resultType="com.person.shoppingmall_admin.data.OrderInfoVO">
+        select 
+        	oi_seq,oi_pi_seq,oi_mi_seq,oi_price,oi_count,
+        	oi_shipping_name,oi_shipping_address,oi_shipping_phone,
+        	oi_shipping_request,oi_pay_type,oi_delivery_status,
+        	oi_delivery_number,oi_status,oi_reg_dt,oi_mod_dt,
+        	pi_name,pi_stock, mfi_name
+        from order_info a join 
+        (select * from product_detail_info where si_seq = #{seq})b
+        on a.oi_pi_seq = b.pi_seq
+        where pi_name like #{keyword}
+        limit 10 offset #{offset}
+        
+    </select>
+    <select id="selectOrderCnt" resultType="java.lang.Integer">
+        select count(*) from order_info a join 
+        (select * from product_info where  pi_seller_seq = #{seq} and pi_name like #{keyword})b
+        on a.oi_pi_seq = b.pi_seq
+    </select>
+
+    <update id="updateOrderDeliveryStatusNumber">
+        update order_info set oi_delivery_status = 2, oi_delivery_number = #{del_num}, oi_mod_dt = now()
+        where oi_seq = #{seq}
+    </update>
+
+</mapper>

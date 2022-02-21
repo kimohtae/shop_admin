@@ -10,6 +10,14 @@
         order by pi_seq desc
         limit 10 offset #{offset}
     </select>
+    <select id="selectRecommendProductList" resultType="com.person.shoppingmall_admin.data.ProductVO">
+        select a.*, b.rp_seq as recommend from product_detail_info a left outer join recommend_prod b 
+        on a.pi_seq  = b.rp_pi_seq 
+        where pi_name like #{keyword}
+        order by pi_seq desc
+        limit 10 offset #{offset}
+    </select>
+
     <select id="selectProductCnt" resultType="java.lang.Integer">
         select count(*) from product_detail_info
         where pi_name like #{keyword}
@@ -100,5 +108,21 @@
         where
             pdd_pi_seq=#{seq}
     </update>
+    <update id="updateProductCnt">
+        update product_info set 
+            pi_stock = pi_stock - #{cnt}
+        where
+            pi_seq = #{seq}
+    </update>
+
+
+
+    <insert id="insertProductRecommend">
+        insert into recommend_prod(rp_pi_seq) values (#{seq})
+    </insert>
+    <delete id="deleteProductRecommend">
+        delete from recommend_prod
+        where rp_pi_seq = #{seq}
+    </delete>
 
 </mapper>

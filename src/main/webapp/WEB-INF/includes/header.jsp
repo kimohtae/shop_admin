@@ -15,12 +15,14 @@
     <link rel="stylesheet" href="/assets/css/header.css">
     
     <script src="/assets/plugins/jquery-3.4.1.min.js"></script>
+
     <script>
         if( '${adminuser}' == '' && '${login_seller}' == ''){
             alert("로그인 후 사용하실 수 있습니다.");
             location.href = "/";
         }
     </script>
+
     <title>Document</title>
 </head>
 <body>

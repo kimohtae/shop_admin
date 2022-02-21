@@ -52,4 +52,6 @@ public class ProductVO {
     private Double discounted_price;
     private Double saving_point;
     private String thumbnail;
+
+    private Integer recommend;
 }
