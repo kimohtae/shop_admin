@@ -14,22 +14,22 @@ public class SellerController {
     @Autowired SellerMapper mapper;
 
     @GetMapping("/account/seller")
-    public String getAccountSeller(@RequestParam @Nullable String keyword, @RequestParam @Nullable Integer offset, Model model){
+    public String getAccountSeller(@RequestParam @Nullable String keyword, @RequestParam @Nullable Integer offset, Model model) {
         model.addAttribute("keyword", keyword);
         if(keyword == null) keyword = "%%";
-        else keyword = "%"+ keyword +"%";
+        else keyword = "%"+keyword+"%";
         if(offset == null) offset = 0;
 
-        int cnt = mapper.selectSellerCnt(keyword);
-        int page = (cnt/10)+cnt%10>0?1:0;
-
         model.addAttribute("offset", offset);
-        model.addAttribute("cnt", cnt);
-        model.addAttribute("page", page);
         model.addAttribute("list", mapper.selectSellerList(keyword, offset));
 
+        Integer cnt = mapper.selectSellerCnt(keyword);
+        Integer page = (cnt/10) + (cnt%10>0?1:0);
 
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("page", page);
+        model.addAttribute("menu1", "account");
+        model.addAttribute("menu2", "seller");
         return "/account/seller";
     }
-
 }

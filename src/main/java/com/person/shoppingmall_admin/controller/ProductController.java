@@ -1,6 +1,5 @@
 package com.person.shoppingmall_admin.controller;
 
-
 import javax.servlet.http.HttpSession;
 
 import com.person.shoppingmall_admin.data.SellerVO;
@@ -18,54 +17,53 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProductController {
     @Autowired ProductMapper mapper;
     @Autowired CategoryMapper cate_mapper;
-    
     @GetMapping("/product/list")
     public String getProductList(
         @RequestParam @Nullable String keyword, 
-        @RequestParam @Nullable Integer offset,
+        @RequestParam @Nullable Integer offset, 
         Model model, HttpSession session
-    ){
+    ) {
         SellerVO seller = (SellerVO)session.getAttribute("login_seller");
         Integer seller_seq = 0;
         if(seller != null) seller_seq = seller.getSi_seq();
-        
-
         model.addAttribute("keyword", keyword);
         if(keyword == null) keyword = "%%";
-            else keyword = "%"+ keyword +"%";
-        if(offset == null) offset=0;
-
-        int cnt = mapper.selectProductCnt(keyword, seller_seq);
-        int page = (cnt/10)+(cnt%10>0?1:0);
-
+        else keyword = "%"+keyword+"%";
+        if(offset == null) offset = 0;
         model.addAttribute("offset", offset);
-        model.addAttribute("cnt", cnt);
-        model.addAttribute("page", page);
         model.addAttribute("list", mapper.selectProductList(keyword, offset, seller_seq));
         model.addAttribute("root_cate", cate_mapper.selectRootCategories());
-        
+
+        Integer cnt = mapper.selectProductCnt(keyword, seller_seq);
+        Integer page = (cnt/10)+(cnt%10>0 ? 1 : 0);
+
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("page", page);
+        model.addAttribute("menu1", "product");
+        model.addAttribute("menu2", "list");
         return "/product/list";
     }
 
     @GetMapping("/product/recommend")
-    public String getProductRecommend(
+    public String getProductRecommend(Model model,
         @RequestParam @Nullable String keyword, 
-        @RequestParam @Nullable Integer offset,
-        Model model
-        ){
+        @RequestParam @Nullable Integer offset
+    ) {
         model.addAttribute("keyword", keyword);
         if(keyword == null) keyword = "%%";
-        else keyword = "%"+ keyword +"%";
+        else keyword = "%"+keyword+"%";
 
-        if(offset == null) offset=0;
+        if(offset == null) offset = 0;
 
-        int cnt = mapper.selectProductCnt(keyword, 0);
-        int page = (cnt/10)+(cnt%10>0?1:0);
+        Integer cnt = mapper.selectProductCnt(keyword, 0);
+        Integer page = (cnt/10)+(cnt%10>0 ? 1 : 0);
 
         model.addAttribute("cnt", cnt);
         model.addAttribute("page", page);
-        
+
         model.addAttribute("list", mapper.selectRecommendProductList(keyword, offset));
+        model.addAttribute("menu1", "product");
+        model.addAttribute("menu2", "recommend");
         return "/product/recommend";
     }
 }

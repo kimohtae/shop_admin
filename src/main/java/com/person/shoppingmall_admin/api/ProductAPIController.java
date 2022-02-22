@@ -1,6 +1,5 @@
 package com.person.shoppingmall_admin.api;
 
-
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,48 +27,50 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/product")
 public class ProductAPIController {
-    @Value("${spring.servlet.multipart.location}") String path;
-    @Autowired ProductMapper mapper;
+    @Value("${spring.servlet.multipart.location}")
+    String path;
 
+    @Autowired ProductMapper mapper;
     @PostMapping("/add")
-    public Map<String, Object> postAddProduct(@RequestBody ProductRequest data){
-        Map<String, Object> resultMap = new LinkedHashMap<>();
+    public Map<String, Object> postAddProduct(@RequestBody ProductRequest data) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         mapper.insertProductInfo(data.getP_data());
         Integer seq = data.getP_data().getPi_seq();
-        for(ProductImageVO imgVO : data.getP_img_list()){
+        for(ProductImageVO imgVO : data.getP_img_list()) {
             imgVO.setPii_pi_seq(seq);
             mapper.insertProductImage(imgVO);
         }
         data.getP_desc().setPdd_pi_seq(seq);
         mapper.insertProductDescription(data.getP_desc());
-        for(ProductDescImageVO descImgVo:data.getP_desc_img_list()){
-            descImgVo.setPddi_pi_seq(seq);
-            mapper.insertProductDescImage(descImgVo);
+        for(ProductDescImageVO descImgVO : data.getP_desc_img_list()) {
+            descImgVO.setPddi_pi_seq(seq);
+            mapper.insertProductDescImage(descImgVO);
         }
- 
+
         resultMap.put("status", true);
         resultMap.put("message", "제품이 추가되었습니다.");
         return resultMap;
     }
-
     @DeleteMapping("/delete")
-    public String deleteProduct(@RequestParam Integer seq){
+    public String deleteProduct(@RequestParam Integer seq) {
         List<String> prodImgList = mapper.selectProductImageNames(seq);
         List<String> prodDescImgList = mapper.selectProductDescImageNames(seq);
-        for(String url:prodImgList){
-            if(!url.equals("default.jpg")){
+        for(String url : prodImgList){
+            System.out.println(url);
+            if(!url.equals("default.jpg")) {
                 String filePath = path+"/product/"+url;
                 File deleteFile = new File(filePath);
-                if(deleteFile.exists()){
+                if(deleteFile.exists()) {
                     deleteFile.delete();
                 }
             }
         }
-        for(String url:prodDescImgList){
-            if(!url.equals("default.jpg")){
+        for(String url : prodDescImgList){
+            System.out.println(url);
+            if(!url.equals("default.jpg")) {
                 String filePath = path+"/product/"+url;
                 File deleteFile = new File(filePath);
-                if(deleteFile.exists()){
+                if(deleteFile.exists()) {
                     deleteFile.delete();
                 }
             }
@@ -79,56 +80,56 @@ public class ProductAPIController {
     }
 
     @GetMapping("/select_one")
-    public ProductResponse getProduct(@RequestParam Integer seq){
+    public ProductResponse getProduct(@RequestParam Integer seq) {
         ProductResponse pRes = new ProductResponse();
-        
-        pRes.setP_data(mapper.selectProductBySeq(seq));
+
         pRes.setP_img_list(mapper.selectProductImageNames(seq));
         pRes.setP_desc_img_list(mapper.selectProductDescImageNames(seq));
+        pRes.setP_data(mapper.selectProductBySeq(seq));
         pRes.setP_desc(mapper.selectProductDescription(seq));
 
         return pRes;
     }
 
     @DeleteMapping("/delete_img/{type}")
-    public String deleteProductImage(@PathVariable String type, @RequestParam String fileName){
-        if(type.equals("basic")){
+    public String deleteProductImage(@PathVariable String type, @RequestParam String fileName) {
+        if(type.equals("basic")) {
             mapper.deleteProductImage(fileName);
         }
-        if(type.equals("detail")){
+        if(type.equals("detail")) {
             mapper.deleteDetailProductImage(fileName);
         }
         return "이미지가 삭제되었습니다.";
     }
 
     @PatchMapping("/update")
-    public String updateProduct(@RequestBody ProductRequest data){
+    public String updateProduct(@RequestBody ProductRequest data) {
+
         Integer seq = data.getP_data().getPi_seq();
+
         mapper.deleteProductImageBySeq(seq);
         mapper.deleteProductDetailImageBySeq(seq);
 
-        for(ProductImageVO img:data.getP_img_list()){
+        for(ProductImageVO img : data.getP_img_list()) {
             mapper.insertProductImage(img);
         }
-        for(ProductDescImageVO img:data.getP_desc_img_list()){
+        for(ProductDescImageVO img : data.getP_desc_img_list()) {
             mapper.insertProductDescImage(img);
-        }   
+        }
 
         mapper.updateProductInfo(data.getP_data());
         mapper.updateProdDetailDesc(data.getP_desc().getPdd_content(), seq);
-
 
         return "제품이 수정되었습니다.";
     }
 
     @PutMapping("/recommend")
-    public String putProductRecommend(@RequestParam Integer seq){
+    public String putProductRecommend(@RequestParam Integer seq) {
         mapper.insertProductRecommend(seq);
         return "추천상품에 등록되었습니다.";
     }
-
     @DeleteMapping("/recommend")
-    public String deleteProductRecommend(@RequestParam Integer seq ){
+    public String deleteProductRecommend(@RequestParam Integer seq) {
         mapper.deleteProductRecommend(seq);
         return "추천상품에서 삭제되었습니다.";
     }
