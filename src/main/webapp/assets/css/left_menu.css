@@ -35,12 +35,12 @@
 #left_menu .sub a {margin-left: 15px; font-size: 14px; padding-top: 5px; padding-bottom: 5px;}
 
 #left_menu > li {position: relative;}
-#left_menu > li::before {
+#left_menu  li::before {
     content:"";
     display: inline-block; width: 16px; height: 80%; background-color: #fe634d;
     position: absolute; left: 0; top: 10%; border-radius: 10px; margin-left: -10px;
     display: none;
 }
-#left_menu > li.current::before {display: inline-block;}
+#left_menu  li.current::before {display: inline-block;}
 
 #left_menu li i {display: inline-block; vertical-align: middle; width: 20px;}

@@ -1,5 +1,6 @@
 package com.person.shoppingmall_admin.controller;
 
+
 import javax.servlet.http.HttpSession;
 
 import com.person.shoppingmall_admin.data.SellerVO;
@@ -65,5 +66,41 @@ public class ProductController {
         model.addAttribute("menu1", "product");
         model.addAttribute("menu2", "recommend");
         return "/product/recommend";
+    }
+
+    @GetMapping("/product/review")
+    public String getProductQna(
+            @RequestParam @Nullable Integer offset,
+            @RequestParam @Nullable String align_type,
+            @RequestParam @Nullable String review_status,
+            @RequestParam @Nullable String keyword,
+            @RequestParam @Nullable String search_type,
+            Model model, HttpSession session
+        ){
+            SellerVO seller = (SellerVO)session.getAttribute("login_seller");
+            Integer si_seq = 0;
+            if(seller != null) si_seq = seller.getSi_seq();
+            if(offset == null)offset=0;
+            if(align_type == null)align_type="default";
+            if(review_status == null)review_status = "all";
+            if(search_type == null)search_type = "all";
+            model.addAttribute("keyword",keyword);
+            if(keyword == null){
+                keyword = "%%";
+            }else{
+                keyword = "%"+keyword+"%";
+            }
+
+            Integer cnt = mapper.selectProductReviewCount(si_seq, review_status, keyword, search_type);
+            Integer page = cnt/10 + (cnt%10>0 ? 1:0);
+
+            model.addAttribute("page",page);
+            model.addAttribute("offset",offset);
+            model.addAttribute("align_type",align_type);
+            model.addAttribute("search_type",search_type);
+            model.addAttribute("review_status",review_status);
+            model.addAttribute("list",mapper.selectProductReview(si_seq, offset, align_type, review_status, keyword, search_type));
+
+            return "/product/review";
     }
 }
