@@ -120,6 +120,7 @@ public class FileAPIController {
                     deleteFile.delete();
                 }
             }
+            
         }
         return uri_list.size()+"개의 이미지가 삭제되었습니다.";
     }
